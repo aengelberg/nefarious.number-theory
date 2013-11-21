@@ -1,6 +1,6 @@
-(ns nefarious.number-theory.core)
+(ns nefarious.number-theory.core
+  (:require [clojure.math.numeric-tower :as m]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(load "quadratic")
+
+
