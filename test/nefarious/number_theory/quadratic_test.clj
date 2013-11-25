@@ -2,4 +2,4 @@
     (:use clojure.test
         nefarious.number-theory.core))
 
-
+(is (= (quadratic-solutions

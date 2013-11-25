@@ -14,10 +14,13 @@
                (/ (+ (- b) sqrt-d) (* 2 a)))))))
 
 ; quadratic-integer-solutions : Real Real Real -> (Listof Integer)
-(defn quadratic-integer-solutions [a b c]
+(defn quadratic-integer-solutions 
+  "Returns list of integer solutions to a x^2 + b x + c = 0"
+  [a b c]
   (filter integer? (quadratic-solutions a b c)))
 
 ; quadratic-natural-solutions : Real Real Real -> (Listof Natural)
 (defn quadratic-natural-solutions [a b c]
+  "Returns list of natural solutions to a x^2 + b x + c = 0"
   (filter (fn [x] (or (pos? x) (zero? x))) (quadratic-integer-solutions a b c)))
 
