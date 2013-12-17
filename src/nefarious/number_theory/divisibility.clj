@@ -1,5 +1,5 @@
-(ns nefarious.number-theory.divisibility
-  (:use clojure.math.numeric-tower))
+(in-ns 'nefarious.number-theory.core)
+(use 'clojure.math.numeric-tower)
 
 (defn- gcd-multi
   ([x]
