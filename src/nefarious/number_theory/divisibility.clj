@@ -43,32 +43,39 @@ Runs in O(N^2) time, in terms of calls to gcd."
       [ub vb]
       (recur b r ub vb (- ua (* q ub)) (- va (* q vb))))))
 
+(defn- bezout-start
+  [a b]
+  (if (> a b)
+    (bezout-loop a b 1 0 0 1)
+    (bezout-loop b a 0 1 1 0)))
+
 (defn- bezout-binary
   [a b]
   (cond
-    (zero? a) (list 0 1)
-    (zero? b) (list 1 0)
-    :else (let [[a b ua va ub vb] (if (> a b)
-                                    [a b 1 0 0 1]
-                                    [b a 0 1 1 0])]
-            (loop [a a
-                   b b
-                   ua ua
-                   va va
-                   ub ub
-                   vb vb]
-              (let [r (mod a b)
-                    q (quot a b)]
-                (if (= r 0)
-                  (list ub vb)
-                  (recur b r ub vb (- ua (* q ub)) (- va (* q vb)))))))))
+    (zero? a) (if (pos? b)
+                [1 1]
+                [1 -1])
+    (zero? b) (if (pos? a)
+                [1 1]
+                [-1 1])
+    :else (case [(pos? a) (pos? b)]
+            [true true] (bezout-start a b)
+            [false false] (mapv - (bezout-start (- a) (- b)))
+            [false true] (let [k (+ (quot (- a) b) 1)
+                               [u v] (bezout-start (+ a (* k b)) b)]
+                           [u (+ (* u k) v)])
+            [true false] (let [k (+ (quot (- b) a) 1)
+                               [u v] (bezout-start a (+ (* k a) b))]
+                           [(+ u (* k v)) v]))))
 
 (defn bezout
-  "Given a list (a b c ...), returns a list (u v w ...) such that gcd(a, b, c, ...) = au + bv + cw + ..."
+  "Given a list (a b c ...), returns a list (u v w ...) such that a*u + b*v + c*w + ... = gcd(a, b, c, ...)."
   [a & more]
   (cond
-    (empty? more) (list a)
-    (empty? (rest more)) (bezout-binary a (first more))
+    (empty? more) (if (neg? a)
+                    (list -1)
+                    (list 1))
+    (empty? (rest more)) (seq (bezout-binary a (first more)))
     :else (let [uvs (apply bezout more)
                 [s t] (bezout-binary (apply gcd-multi more) a)]
             (cons t (map #(* s %) uvs)))))

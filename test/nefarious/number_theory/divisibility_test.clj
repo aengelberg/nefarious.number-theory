@@ -1,5 +1,5 @@
 (ns nefarious.number-theory.divisibility-test
-  (:use nefarious.number-theory.divisibility
+  (:use nefarious.number-theory.core
         clojure.math.numeric-tower
         clojure.test))
 
@@ -39,12 +39,14 @@
        (pairwise-coprime? 0 2 3)))
 
 (deftest bezout-test
-  (doseq [len (range 1 4)]
-    (dotimes [i 10]
-      (let [l (repeatedly i #(- (rand-int 10) 5))
-            _ (println l)]
+  (doseq [len (range 1 5)]
+    (dotimes [i 30]
+      (let [l (repeatedly len #(- (rand-int 10) 5))
+            ;_ (println l)
+            ]
         (when (apply not= 0 l)
           (let [b (apply bezout l)
-                _ (println b)]
+                ;_ (println b)
+                ]
             (is (= (apply + (map * l b))
                    (abs (reduce gcd l))))))))))
