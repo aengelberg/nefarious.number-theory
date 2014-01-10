@@ -1,6 +1,6 @@
 (ns nefarious.number-theory.quadratic-test
     (:use clojure.test
-        nefarious.number-theory.core))
+          nefarious.number-theory.core))
 
 (deftest quadratic-test
   (is (or (= (quadratic-solutions  1 1 -6) '(-3 2)) (= (quadratic-solutions  1 1 -6) '(2 -3))))
