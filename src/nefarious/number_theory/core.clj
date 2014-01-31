@@ -2,5 +2,6 @@
   (:require [clojure.math.numeric-tower :as m]))
 
 (load "quadratic")
+(load "fibonacci")
 
 
